@@ -1,0 +1,4 @@
+method main {
+  val max = if a > b then a else b;
+  for ((name, rating) <- ratings) print("Movie: $name, Rating: $rating")
+}

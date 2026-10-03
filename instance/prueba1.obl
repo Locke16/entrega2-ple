@@ -1,0 +1,3 @@
+method main {
+  print("Resultado: ${1 + 2 * 3}")
+}
