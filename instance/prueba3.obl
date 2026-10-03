@@ -1,0 +1,15 @@
+object Animal
+object Dog extends Animal
+object Food
+object DogFood extends Food
+
+object Transformador[-Entrada, +Salida]
+
+method main {
+  val alimentador: Transformador[Animal, DogFood] = new Transformador[Animal, DogFood] {
+    override transformar(animal: Animal): DogFood = {
+      new DogFood
+    }
+  };
+  for (x in alimentador) print("probando for")
+}
