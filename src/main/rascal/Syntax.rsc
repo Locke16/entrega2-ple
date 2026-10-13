@@ -63,11 +63,11 @@ syntax ParametroConstructor
 
 // ---------- Métodos ----------
 syntax DefinicionMetodo
-  = metodo: "method" Identificador Parametros? (":" Tipo)? CuerpoMetodo
+  = metodo: "method" Identificador Parametros? AnotTipo? CuerpoMetodo
   ;
 
 syntax AsignacionMetodo
-  = asignacion: Identificador "." Identificador "=" "method" Parametros? (":" Tipo)? CuerpoMetodo?
+  = asignacion: Identificador "." Identificador "=" "method" Parametros? AnotTipo? CuerpoMetodo?
   ;
 
 syntax Parametros = parametros: "(" {Parametro ","}* ")";
@@ -97,8 +97,8 @@ syntax Patron
 
 // ---------- Variables ----------
 syntax DeclaracionVariable
-  = declVal: "val" Identificador (":" Tipo)? "=" Exp
-  | declVar: "var" Identificador (":" Tipo)? "=" Exp
+  = declVal: "val" Identificador AnotTipo? "=" Exp
+  | declVar: "var" Identificador AnotTipo? "=" Exp
   ;
 
 // ---------- Expresiones (precedencia nativa de Rascal) ----------
@@ -107,7 +107,7 @@ syntax Exp
   | llamada: Identificador Llamada*
   | agrupada: "(" Exp ")"
   | expSi: "if" Exp "then" Exp "else" Exp
-  | expNuevo: "new" Tipo ("(" Argumentos? ")")? CuerpoObjeto?
+  | expNuevo: "new" Tipo ArgsParen? CuerpoObjeto?
   > negacion: "neg" Exp
   | menos: "-" Exp
   > right potencia: Exp "**" Exp
@@ -131,13 +131,16 @@ syntax Exp
 
 syntax Llamada
   = conArgumentos: "(" Argumentos? ")"
-  | conPunto: "." Identificador ("(" Argumentos? ")")?
+  | conPunto: "." Identificador ArgsParen?
   ;
 
 syntax Argumentos = argumentos: {Exp ","}+;
 
+syntax ArgsParen = argsParen: "(" Argumentos? ")";
+syntax AnotTipo = anotTipo: ":" Tipo;
+
 syntax CuerpoObjeto = cuerpoObjeto: "{" MetodoOverride* "}";
-syntax MetodoOverride = metodoOverride: "override" Identificador Parametros (":" Tipo)? "=" CuerpoMetodo;
+syntax MetodoOverride = metodoOverride: "override" Identificador Parametros AnotTipo? "=" CuerpoMetodo;
 
 // ---------- Punto de entrada ----------
 syntax Principal = principal: "method" "main" CuerpoMetodo;
