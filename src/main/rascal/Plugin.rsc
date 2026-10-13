@@ -9,7 +9,7 @@ import Relation;
 
 import Syntax;
 
-PathConfig pcfg = getProjectPathConfig(|project://objectilang|);
+PathConfig pcfg = getProjectPathConfig(|project://entrega2-ple|);
 Language objectilangLang = language(pcfg, "Objectilang", "obl", "Plugin", "contribs");
 
 set[LanguageService] contribs() = {

@@ -73,14 +73,6 @@ syntax AsignacionMetodo
 syntax Parametros = parametros: "(" {Parametro ","}* ")";
 syntax Parametro = parametro: Identificador ":" Tipo;
 
-// Se necesita un separador real entre sentencias -- "print(...)" sin nada
-// de por medio es ambiguo entre "una llamada" y "dos sentencias pegadas".
-// Se probo primero exigir un salto de linea (como en los snippets del
-// enunciado original), pero el separador de salto de linea entra en
-// conflicto con el Layout automatico que Rascal inserta en todo syntax
-// (ambos compiten por el mismo caracter \n en un parser scannerless).
-// Punto y coma es la alternativa simple y confirmada que no tiene ese
-// problema -- documentado como cambio real al lenguaje en el Task 2.
 syntax Sentencia
   = sentDecl: DeclaracionVariable
   | sentExp: Exp
@@ -131,9 +123,9 @@ syntax Exp
 
 syntax Llamada
   = conArgumentos: "(" Argumentos? ")"
-  | conPunto: "." Identificador ArgsParen?
+  | conPunto: "." Identificador
   ;
-
+  
 syntax Argumentos = argumentos: {Exp ","}+;
 
 syntax ArgsParen = argsParen: "(" Argumentos? ")";

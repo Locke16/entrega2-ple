@@ -141,7 +141,7 @@ data Exp
 
 data Llamada
   = conArgumentos(list[Argumentos] argumentos)
-  | conPunto(str nombre, list[ArgsParen] llamadaParen)
+  | conPunto(str nombre)
   ;
 
 data Argumentos
