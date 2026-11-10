@@ -12,7 +12,7 @@ method main {
   val alimentadorAnimal: Transformador[Animal, ComidaPerro] = new Transformador[Animal, ComidaPerro] {
     override transformar(animal: Animal): ComidaPerro = {
       println("Preparando comida especializada para un animal...");
-      new ComidaPerro
+      new ComidaPerro;
     }
   };
 
@@ -21,5 +21,5 @@ method main {
   val miCachorro = new Cachorro;
   val comidaResultante: Comida = alimentadorCachorro.transformar(miCachorro);
 
-  print("Tipo de comida resultante: ${comidaResultante.getClass.getSimpleName}")
+  print("Tipo de comida resultante: ${comidaResultante.getClass.getSimpleName}");
 }

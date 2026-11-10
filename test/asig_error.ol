@@ -4,5 +4,5 @@ method main {
   nada = 3;
   var animal = true;
   animal = 5;
-  print(contador)
+  print(contador);
 }

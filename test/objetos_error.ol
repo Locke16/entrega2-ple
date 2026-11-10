@@ -5,7 +5,7 @@ object Caja[+A](val contenido: A)
 object Fila(val elementos: Cosa)
 Fantasma.hablar = method(): String
 
-method doble(numero: Int): Int { numero * 2 }
+method doble(numero: Int): Int { numero * 2; }
 
 method main {
   val perroFalso: Perro = new Animal("x");
@@ -20,6 +20,6 @@ method main {
   val llamada = desconocida(3);
   val nombreEntero: Int = perroFalso.nombre;
   val cajaOverride: Caja[Animal] = new Caja[Animal](new Animal("z")) {
-    override inexistente(x: Int): Int = { x }
-  }
+    override inexistente(x: Int): Int = { x; }
+  };
 }

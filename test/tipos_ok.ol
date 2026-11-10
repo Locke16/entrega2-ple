@@ -7,5 +7,5 @@ method main {
   val valido: Boolean = entero < 20 and neg false;
   val resultado = if valido then entero else 0;
   val mensaje = "valor: ${entero + 1} y $texto";
-  print(mensaje)
+  print(mensaje);
 }

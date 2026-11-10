@@ -4,5 +4,5 @@ method main {
   contador = contador + 1;
   texto = "b";
   val igualdad = contador = 2;
-  print(contador)
+  print(contador);
 }

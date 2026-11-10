@@ -2,6 +2,7 @@ module Parser
 
 import ParseTree;
 import Syntax;
+import Exception;
 
 // Parsea un archivo .ol y devuelve su arbol concreto.
 //
@@ -10,9 +11,21 @@ import Syntax;
 // y, donde ocurre, se elige la asignacion. Cualquier OTRA ambiguedad sigue siendo un error.
 Tree parsearArchivo(loc archivo) {
     start[Programa] pt = parse(#start[Programa], archivo, allowAmbiguity=true);
-    Tree resuelto = preferirAsignacion(pt.top);
-    if (/amb(_) := resuelto) {
-        throw Ambiguity(archivo, "Programa", "ambiguedad no resuelta");
+    return validarYResolver(pt.top, archivo);
+}
+
+// Parsea codigo fuente que ya esta en memoria (por ejemplo, el str generado
+// por CodeGenerator) con la misma politica de ambiguedades que un archivo.
+Tree parsearTexto(str texto) {
+    start[Programa] pt = parse(#start[Programa], texto, allowAmbiguity=true);
+    return validarYResolver(pt.top, |unknown:///|);
+}
+
+
+Tree validarYResolver(Tree arbol, loc origen) {
+    Tree resuelto = preferirAsignacion(arbol);
+    if (amb(_) := resuelto) {
+        throw Ambiguity(origen, "Programa", "ambiguedad no resuelta");
     }
     return resuelto;
 }
@@ -27,3 +40,6 @@ bool esAsignacion(Tree t) = appl(prod(label("sentAsig", _), _, _), _) := t;
 
 // Parsea una expresion suelta (se usa para las interpolaciones ${...} de las cadenas).
 Tree parsearExp(str texto) = parse(#Exp, texto);
+
+Tree parsearOverride(str texto) = parse(#MetodoOverride, texto);
+Tree parsearCuerpo(str texto) = parse(#CuerpoMetodo, texto);

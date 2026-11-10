@@ -98,7 +98,7 @@ syntax Sentencia
   | sentFor: SentenciaFor
   ;
 // Cambio - evidence 1.1: quitar ";" genera mas ambiguedades.
-syntax CuerpoMetodo = cuerpo: "{" {Sentencia ";"}* "}";
+syntax CuerpoMetodo = cuerpo: "{" (Sentencia ";")* "}";
 
 
 syntax SentenciaFor = paraCada: "for" !>> [a-zA-Z0-9] "(" ClausulaFor ")" Sentencia;

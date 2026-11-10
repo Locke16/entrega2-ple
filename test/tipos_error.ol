@@ -8,5 +8,5 @@ method main {
   val indefinida = desconocida + 1;
   val letra: Char = 'a';
   val mezcla = letra and true;
-  print(entero)
+  print(entero);
 }

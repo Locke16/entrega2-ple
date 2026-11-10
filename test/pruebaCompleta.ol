@@ -4,7 +4,7 @@ object Animal[T] (val nombre: String, var edad: Int) {
     var activo: Boolean = true
     method sonido(): String {
         val respuesta = "Sonido animal";
-        print(respuesta)
+        print(respuesta);
     }
 }
 
@@ -18,16 +18,16 @@ method calcular(x: Int, y: Int): Int {
     val producto = x * y;
     val division = x / y;
     val modulo = x % y;
-    val potencia = x ** 2
+    val potencia = x ** 2;
 }
 
 method saludar(nombre: String): String {
-    print(nombre)
+    print(nombre);
 }
 
 Animal.sonido = method(): String {
     val respuesta = "Guau";
-    print(respuesta)
+    print(respuesta);
 }
 
 method main {
@@ -75,5 +75,5 @@ method main {
 
     print(interpolado);
     print(condicion);
-    print(llamada)
+    print(llamada);
 }

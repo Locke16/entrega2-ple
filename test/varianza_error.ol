@@ -10,9 +10,9 @@ method main {
   val cajaAnimales: Caja[Animal] = new Caja[Animal](new Animal);
   val cajaPerros: Caja[Perro] = cajaAnimales;
   val aPerro: Funcion[Perro, Animal] = new Funcion[Perro, Animal] {
-    override aplicar(x: Perro): Animal = { x }
+    override aplicar(x: Perro): Animal = { x; }
   };
   val invalida: Funcion[Animal, Perro] = aPerro;
   val valida: Funcion[Cachorro, Animal] = aPerro;
-  print("fin")
+  print("fin");
 }
