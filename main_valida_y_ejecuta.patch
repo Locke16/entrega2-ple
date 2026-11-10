@@ -1,0 +1,91 @@
+diff --git a/src/main/rascal/Checker.rsc b/src/main/rascal/Checker.rsc
+index efa9d31..f716f54 100644
+--- a/src/main/rascal/Checker.rsc
++++ b/src/main/rascal/Checker.rsc
+@@ -812,6 +812,9 @@ void collect(current: (Exp) `<Identificador f> <ArgsParen a>`, Collector c) {
+                 list[AType] ts = [s.getType(x) | Exp x <- args];
+                 return size(ts) == 1 ? ts[0] : tipoUnit();
+             });
++    } else if (nombre == "range" || nombre == "List") {
++        // funciones predefinidas: el lenguaje no define tipos de coleccion, asi que su resultado no se restringe
++        c.fact(current, tipoError());
+     } else {
+         str contexto = objetoActual;
+         c.calculate("llamada <nombre>", current, args,
+@@ -1156,17 +1159,23 @@ TModel verificarArbol(Tree arbol)
+ // Uso: validar(|project://entrega2-ple/test/objetos_ok.ol|);
+ // Uso: validar(|project://entrega2-ple/test/objetos_ok.ol|);
+ // Parsea el archivo, verifica tipos y muestra "OK" o la lista de errores ordenada por linea.
+-void validar(loc archivo) {
++// Verifica el programa, imprime el resultado y devuelve true si no hay errores de tipos.
++bool verificar(loc archivo) {
+     Tree arbol = parsearArchivo(archivo);
+     TModel tm = verificarArbol(arbol);
+     list[Message] errores = [m | Message m <- tm.messages, m is error];
+     errores = sort(errores, bool(Message a, Message b) { return a.at.begin.line < b.at.begin.line; });
+     if (errores == []) {
+         println("OK: el programa pasa la verificacion de tipos");
+-    } else {
+-        println("<size(errores)> error(es):");
+-        for (Message m <- errores) {
+-            println("  linea <m.at.begin.line>: <m.msg>");
+-        }
++        return true;
++    }
++    println("<size(errores)> error(es):");
++    for (Message m <- errores) {
++        println("  linea <m.at.begin.line>: <m.msg>");
+     }
++    return false;
++}
++
++void validar(loc archivo) {
++    verificar(archivo);
+ }
+diff --git a/src/main/rascal/Main.rsc b/src/main/rascal/Main.rsc
+index cc213f3..34693e9 100644
+--- a/src/main/rascal/Main.rsc
++++ b/src/main/rascal/Main.rsc
+@@ -1,17 +1,37 @@
+ module Main
+ 
+ import IO;
++import Exception;
+ import AST;
+ import ASTBuilder;
++import Checker;
++import Interpreter;
+ 
+-// Punto de entrada del proyecto: lee un archivo de Objectilang, lo convierte en AST y lo imprime.
++// Punto de entrada: lee un archivo .ol, verifica sus tipos y, si no hay errores,
++// lo ejecuta y muestra el resultado en la consola.
+ //
+ // Uso desde la terminal de Rascal:
+ //   import Main;
+ //   main();                                                  // usa el archivo por defecto
+-//   main(archivo=|project://entrega2-ple/instance/snippet3.obl|);
++//   main(archivo=|project://entrega2-ple/test/prueba.ol|);
+ int main(loc archivo=|project://entrega2-ple/instance/snippet1.obl|) {
+-    Programa programa = construirAST(archivo);
+-    iprintln(programa);
+-    return 0;
++    try {
++        if (!verificar(archivo)) return 1;
++        ejecutar(archivo);
++        return 0;
++    } catch ParseError(loc donde): {
++        println("Error de sintaxis en la linea <donde.begin.line>, columna <donde.begin.column>");
++        return 1;
++    } catch Ambiguity(_, _, _): {
++        println("Error de sintaxis: el programa es ambiguo");
++        return 1;
++    } catch value error: {
++        println("Error de ejecucion: <error>");
++        return 1;
++    }
++}
++
++// Imprime el AST de un archivo (para depurar el parser).
++void mostrarAST(loc archivo=|project://entrega2-ple/instance/snippet1.obl|) {
++    iprintln(construirAST(archivo));
+ }

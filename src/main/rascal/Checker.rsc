@@ -812,6 +812,9 @@ void collect(current: (Exp) `<Identificador f> <ArgsParen a>`, Collector c) {
                 list[AType] ts = [s.getType(x) | Exp x <- args];
                 return size(ts) == 1 ? ts[0] : tipoUnit();
             });
+    } else if (nombre == "range" || nombre == "List") {
+        // funciones predefinidas: el lenguaje no define tipos de coleccion, asi que su resultado no se restringe
+        c.fact(current, tipoError());
     } else {
         str contexto = objetoActual;
         c.calculate("llamada <nombre>", current, args,
@@ -1156,17 +1159,23 @@ TModel verificarArbol(Tree arbol)
 // Uso: validar(|project://entrega2-ple/test/objetos_ok.ol|);
 // Uso: validar(|project://entrega2-ple/test/objetos_ok.ol|);
 // Parsea el archivo, verifica tipos y muestra "OK" o la lista de errores ordenada por linea.
-void validar(loc archivo) {
+// Verifica el programa, imprime el resultado y devuelve true si no hay errores de tipos.
+bool verificar(loc archivo) {
     Tree arbol = parsearArchivo(archivo);
     TModel tm = verificarArbol(arbol);
     list[Message] errores = [m | Message m <- tm.messages, m is error];
     errores = sort(errores, bool(Message a, Message b) { return a.at.begin.line < b.at.begin.line; });
     if (errores == []) {
         println("OK: el programa pasa la verificacion de tipos");
-    } else {
-        println("<size(errores)> error(es):");
-        for (Message m <- errores) {
-            println("  linea <m.at.begin.line>: <m.msg>");
-        }
+        return true;
     }
+    println("<size(errores)> error(es):");
+    for (Message m <- errores) {
+        println("  linea <m.at.begin.line>: <m.msg>");
+    }
+    return false;
+}
+
+void validar(loc archivo) {
+    verificar(archivo);
 }
