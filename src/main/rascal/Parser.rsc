@@ -24,7 +24,7 @@ Tree parsearTexto(str texto) {
 
 Tree validarYResolver(Tree arbol, loc origen) {
     Tree resuelto = preferirAsignacion(arbol);
-    if (amb(_) := resuelto) {
+    if (/amb(_) := resuelto) {
         throw Ambiguity(origen, "Programa", "ambiguedad no resuelta");
     }
     return resuelto;

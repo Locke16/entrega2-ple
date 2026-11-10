@@ -221,8 +221,7 @@ str generarFor(SentenciaFor sentenciaFor) {
 str generarCuerpo(CuerpoMetodo cuerpoMetodo) {
     switch (cuerpoMetodo) {
         case cuerpo(sentencias):
-            return "{\n" + intercalate(";\n", [generarSentencia(s) | s <- sentencias]) // mismo uso de intercalate separando los elementos por ; y un salto de linea
-                    + (size(sentencias) > 0 ? ";\n" : "") + "}"; // mismo uso de verificar tamaño de sentencias, si es mayor a 0 se añade un ; con salto de linea, si no solo queda vacio.
+            return "{\n" + intercalate(";\n", [generarSentencia(s) | s <- sentencias]) + "\n}"; // separadas por ; (la gramatica no admite ; despues de la ultima)
 
         default:
             return "Error";

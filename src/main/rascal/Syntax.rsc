@@ -98,7 +98,7 @@ syntax Sentencia
   | sentFor: SentenciaFor
   ;
 // Cambio - evidence 1.1: quitar ";" genera mas ambiguedades.
-syntax CuerpoMetodo = cuerpo: "{" (Sentencia ";")* "}";
+syntax CuerpoMetodo = cuerpo: "{" {Sentencia ";"}* "}";
 
 
 syntax SentenciaFor = paraCada: "for" !>> [a-zA-Z0-9] "(" ClausulaFor ")" Sentencia;
@@ -126,7 +126,6 @@ syntax Exp
   | llamada: Identificador ArgsParen
   | acceso: Exp "." Identificador ArgsParen?
   | agrupada: "(" Exp ")"
-  | expSi: "if" !>> [a-zA-Z0-9] Exp "then" !>> [a-zA-Z0-9] Exp "else" !>> [a-zA-Z0-9] Exp
   | expNuevo: "new" !>> [a-zA-Z0-9] Tipo ArgsParen? CuerpoObjeto?
   > negacion: Negacion Exp
   | menos: "-" Exp
@@ -151,6 +150,8 @@ syntax Exp
               )
   > left conY: Exp "and" !>> [a-zA-Z0-9] Exp
   > left conO: Exp "or" !>> [a-zA-Z0-9] Exp
+  // Cambio - if-then-else abarca todo lo que tiene a la derecha: "if c then a else b + d" es "else (b + d)"
+  > expSi: "if" !>> [a-zA-Z0-9] Exp "then" !>> [a-zA-Z0-9] Exp "else" !>> [a-zA-Z0-9] Exp
   ;
 
 syntax Llamada
